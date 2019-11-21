@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 
 from config import *
@@ -31,3 +32,15 @@ class PstModel(nn.Module):
 
         return x
 
+
+class PstLoss(nn.Module):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.numPst = 3
+
+    def forward(self, out: torch.Tensor, target: torch.Tensor):
+        loss = -(torch.log(out[target > 0]).sum()) / out.shape[0]
+
+        return loss
